@@ -1,32 +1,21 @@
-import requests
-import json
-import time
+from datetime import date
 
+today = date.today()
 
-def get_price():
+name = input('Введите ваше имя: ')
+day = int(input('Введите день вашего рождения: '))
+month = int(input('Введите месяц вашего рождения: '))
+year = int(input('Введите год вашего рождения: '))
 
-    url = 'https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT'
-    response = requests.get(url)
-    data = json.loads(response.text)
-    return float(data['price'])
+age = today.year - year - ((today.month, today.day) < (month, day))
 
+print(f'{name}, Ваш возраст: {age}')
 
-def check_price():
-    current_price = get_price()
-    prices = [current_price]
-    while True:
-        time.sleep(1)
-        current_price = get_price()
-        prices.append(current_price)
-        if len(prices) > 3600:
-            prices.pop(0)
-        price_change = (current_price - prices[0]) / prices[0] * 100
-        if abs(price_change) >= 1:
-            print(f'Цена изменилась: {price_change:.2f}% за последний час')
-        else:
-            time.sleep(60)
-            print('Цена не выросла более чем на 1% за последние 60 минут')
-
-
-if __name__ == "__main__":
-    check_price()
+if 16 <= age < 18:
+    print("Вы можете получить автомобильные права категории М и подкатегории А1")
+elif 18 <= age < 21:
+    print("Вы можете получить автомобильные права категории категории А, В, С и подкатегорий В1 и С1")
+elif age >= 21:
+    print("Вы можете получить автомобильные права категории категории А, В, С, D, Tm,Tb и подкатегории D1")
+else:
+    print("Вы еще не достигли возраста выдачи автомобильных прав")
